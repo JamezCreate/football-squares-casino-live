@@ -1,0 +1,2 @@
+import { load, respond, failure, publicState, authenticated } from './_common.js';
+export default async function handler(req,res){try{if(req.method!=='GET')return respond(res,405,{error:'Method not allowed'});const {state}=await load();return respond(res,200,{...publicState(state),isOwner:authenticated(req,state)});}catch(e){failure(res,e);}}
