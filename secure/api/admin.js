@@ -9,7 +9,34 @@ export default async function handler(req,res){try{
     if(action==='name'){
       const i=Number(body.square)-1;if(!Number.isInteger(i)||i<0||i>=100)throw httpError(400,'Invalid square');
       const newName=requireString(body.name,55);
-      const old=s.names[i];s.names[i]=newName;audit(s,'name',{square:i+1,old,newName});return true;
+      const old=s.names[i];if(typeof body.expected==='string'&&old!==body.expected)throw httpError(409,'That square changed. Refresh and review it before saving.');
+      if(old===newName)return true;
+      s.names[i]=newName;audit(s,'name',{square:i+1,old,newName});return true;
+    }
+    if(action==='batchNames'){
+      const entries=body.entries;
+      if(!Array.isArray(entries)||entries.length<1||entries.length>100)throw httpError(400,'Provide 1–100 square assignments');
+      const seen=new Set();let changed=0;
+      // Validate the entire batch before writing anything; never silently overwrite recent edits.
+      for(const e of entries){
+        if(!e||!Number.isInteger(e.square)||e.square<1||e.square>100||seen.has(e.square))throw httpError(400,'Each square must appear once, between 1 and 100');
+        seen.add(e.square);
+        if(typeof e.name!=='string'||!e.name.trim()||e.name.trim().length>55)throw httpError(400,'Every assignment needs a name of 1–55 characters');
+        if(typeof e.expected!=='string'||e.expected!==s.names[e.square-1])throw httpError(409,'The board changed since your preview. Refresh and review the import.');
+      }
+      for(const e of entries){const i=e.square-1,old=s.names[i],newName=e.name.trim();if(old!==newName){s.names[i]=newName;audit(s,'name',{square:e.square,old,newName,source:'bulk'});changed++;}}
+      return changed;
+    }
+    if(action==='undoName'){
+      const id=body.eventId;
+      if(typeof id!=='string'||!id||id.length>64)throw httpError(400,'Invalid history entry');
+      const event=s.audit.find(e=>e.id===id&&e.action==='name');
+      if(!event)throw httpError(404,'This change is no longer available to undo');
+      const i=event.details.square-1;
+      const newer=s.audit.slice(s.audit.indexOf(event)+1).some(e=>(e.action==='name'||e.action==='undoName')&&e.details.square===i+1);
+      if(newer||s.names[i]!==event.details.newName)throw httpError(409,'This square was updated again. Review the latest assignment instead.');
+      s.names[i]=event.details.old;
+      audit(s,'undoName',{square:i+1,old:event.details.newName,newName:event.details.old,undid:event.id});return true;
     }
     if(action==='digits'){
       if(game.digitsLocked===true||game.quarter>0||game.kickoffAt)throw httpError(409,'Weekly numbers are locked for this game');
