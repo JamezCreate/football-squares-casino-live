@@ -14,10 +14,11 @@ export default async function handler(req,res){try{
     if(action==='digits'){
       if(game.digitsLocked===true||game.quarter>0||game.kickoffAt)throw httpError(409,'Weekly numbers are locked for this game');
       if(!validDigits(body.cols)||!validDigits(body.rows))throw httpError(400,'Use each digit 0–9 exactly once per team');
-      game.cols=[...body.cols];game.rows=[...body.rows];audit(s,'digits',{gameId:game.id});return true;
+      game.cols=[...body.cols];game.rows=[...body.rows];game.numbersAssigned=true;audit(s,'digits',{gameId:game.id});return true;
     }
     if(action==='lockDigits'){
       if(game.digitsLocked===true||game.quarter>0||game.kickoffAt)throw httpError(409,'Weekly numbers are already locked');
+      if(game.numbersAssigned===false)throw httpError(409,'Save this week’s number assignments before locking');
       if(!validDigits(game.cols)||!validDigits(game.rows))throw httpError(400,'Assign all digits 0–9 once per team before locking');
       game.digitsLocked=true;game.lockedAt=new Date().toISOString();audit(s,'lockDigits',{gameId:game.id});return true;
     }
@@ -25,7 +26,7 @@ export default async function handler(req,res){try{
       const label=requireString(body.label,70)||`Week ${s.games.length+1}`;
       if(s.games.length>=80)throw httpError(400,'Maximum games reached');
       const id='game-'+Date.now()+'-'+Math.random().toString(36).slice(2,7);
-      s.games.push({id,label,cols:[0,1,2,3,4,5,6,7,8,9],rows:[0,1,2,3,4,5,6,7,8,9],scores:[0,0],digitsLocked:false,quarter:0,winners:[],createdAt:new Date().toISOString()});
+      s.games.push({id,label,cols:[0,1,2,3,4,5,6,7,8,9],rows:[0,1,2,3,4,5,6,7,8,9],scores:[0,0],digitsLocked:false,numbersAssigned:false,quarter:0,winners:[],createdAt:new Date().toISOString()});
       s.activeId=id;audit(s,'newGame',{id,label});return true;
     }
     if(action==='activate'){
