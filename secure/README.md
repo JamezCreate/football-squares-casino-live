@@ -41,3 +41,12 @@ Templates are fixed to prevent public callers from spending credits or generatin
 - Audio clips remain optional. ElevenLabs settings appear in the owner's Audio Studio, not in the spectator view.
 
 **Verification:** Browser DOM and interaction tests on desktop and mobile with mocked API state, plus new-game/save/lock/score transition tests. Before relying on the live pool, verify authenticated owner and public viewing with a nonproduction test pool.
+
+
+## Phase 2 — operational confidence (V6)
+- Clear visual distinction: unclaimed, claimed, live leader and confirmed quarter winners; mobile-friendly status legend.
+- Owner bulk import: paste spreadsheet rows `square,name` or tab-delimited; preview validation, explicit occupied-square replacement opt-in, guarded all-or-nothing save, unique positions.
+- Existing single-name edits now send expected prior value to prevent stale overwrite.
+- Owner-only `/api/history` provides the latest 100 recorded actions; undo eligible latest square-name change through server-checked `undoName`.
+- This preserves the existing state schema, owner authentication, private Vercel Blob store, and prior winners. No data migration.
+- Audit logs retain 200 events (existing cap) and are administrative diagnostics, not a permanent compliance ledger.
