@@ -50,4 +50,4 @@ export function assertOwner(req,state){if(!authenticated(req,state))throw httpEr
 export function requireString(v,max=80){if(typeof v!=='string'||v.length>max)throw httpError(400,'Invalid text');return v.trim();}
 export function validDigits(a){return Array.isArray(a)&&a.length===10&&a.every(v=>Number.isInteger(v)&&v>=0&&v<=9)&&new Set(a).size===10;}
 export function publicState(s){return {schema:s.schema,revision:s.revision,names:s.names,games:s.games,activeId:s.activeId,updatedAt:s.updatedAt,ownerConfigured:!!s.owner};}
-export function audit(s,action,details){s.audit.push({time:new Date().toISOString(),action,details});s.audit=s.audit.slice(-200);}
+export function audit(s,action,details){s.audit.push({id:randomBytes(12).toString('hex'),time:new Date().toISOString(),action,details});s.audit=s.audit.slice(-200);}
