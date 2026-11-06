@@ -29,3 +29,15 @@ The old synthesized noise-generator has been removed. Admin-only **Audio Studio*
 Once configured, owner signs in, uses **ElevenLabs Audio Studio**, and generates each of six clips once. ElevenLabs credits are used on clip generation only, not repeated playback. Server will refuse overwriting an existing clip. No sound is played until the spectator checks the sound toggle, satisfying browser autoplay rules. If an asset is missing or API not configured, playback is silent (no synthesized fallback).
 
 Templates are fixed to prevent public callers from spending credits or generating arbitrary content. If you want player-name announcements later, implement an owner-approved queue with rate limits, caching and spend caps.
+
+
+## Phase 1 — redesigned operating experience
+
+- Spectator-first layout: live scores, winning square, board, and recent winners. Owner controls live in a separate workspace with Season Board, Weekly Setup, Game Day, and Audio Studio tabs.
+- Mobile board: scroll cue, compact/large square modes, keyboard-accessible fullscreen control with Escape, and selected-square detail. Grid still uses exact 11 columns (one score-digit heading plus ten squares).
+- New weekly games require explicit **Save Number Assignments → Review → Lock Weekly Numbers** before scores can be entered. Locking is enforced by the server, not solely by disabled buttons. Names stay fixed by season position and remain owner-editable even after digits are locked.
+- Existing historical games without `digitsLocked` or `numbersAssigned` retain their previous behavior to avoid corrupting season history. Newly created games have `digitsLocked:false` and `numbersAssigned:false`.
+- The app continues to use the *existing private Blob key* and authentication cookie; deployment does not migrate or erase season data.
+- Audio clips remain optional. ElevenLabs settings appear in the owner's Audio Studio, not in the spectator view.
+
+**Verification:** Browser DOM and interaction tests on desktop and mobile with mocked API state, plus new-game/save/lock/score transition tests. Before relying on the live pool, verify authenticated owner and public viewing with a nonproduction test pool.
