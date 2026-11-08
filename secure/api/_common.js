@@ -17,7 +17,7 @@ export async function load() {
   const b = await get(STORE_KEY,{access:'private',useCache:false});
   if (!b) return {state:defaults(),etag:null};
   const state = JSON.parse(await new Response(b.stream).text());
-  return {state,etag:b.etag};
+  return {state,etag:b.blob?.etag};
 }
 export async function change(fn) {
   for (let i=0;i<5;i++) {
