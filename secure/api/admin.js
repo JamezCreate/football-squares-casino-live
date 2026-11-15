@@ -1,4 +1,4 @@
-import {change,respond,failure,requirePost,httpError,assertOwner,requireString,validDigits,audit,publicState} from './_common.js';
+import {change,respond,failure,requirePost,httpError,assertOwner,requireString,validDigits,gameLocked,audit,publicState} from './_common.js';
 const score=n=>Number.isInteger(n)&&n>=0&&n<=250;
 export default async function handler(req,res){try{
   requirePost(req);
@@ -7,6 +7,7 @@ export default async function handler(req,res){try{
     assertOwner(req,s);
     const game=s.games.find(g=>g.id===s.activeId);if(!game)throw httpError(409,'Active game missing');
     if(action==='name'){
+      if(gameLocked(game))throw httpError(409,'This game is locked. Square assignments are read-only until a new game is prepared.');
       const i=Number(body.square)-1;if(!Number.isInteger(i)||i<0||i>=100)throw httpError(400,'Invalid square');
       const newName=requireString(body.name,55);
       const old=s.names[i];if(typeof body.expected==='string'&&old!==body.expected)throw httpError(409,'That square changed. Refresh and review it before saving.');
@@ -14,6 +15,7 @@ export default async function handler(req,res){try{
       s.names[i]=newName;audit(s,'name',{square:i+1,old,newName});return true;
     }
     if(action==='batchNames'){
+      if(gameLocked(game))throw httpError(409,'This game is locked. Spreadsheet assignments cannot be changed.');
       const entries=body.entries;
       if(!Array.isArray(entries)||entries.length<1||entries.length>100)throw httpError(400,'Provide 1–100 square assignments');
       const seen=new Set();let changed=0;
@@ -28,6 +30,7 @@ export default async function handler(req,res){try{
       return changed;
     }
     if(action==='undoName'){
+      if(gameLocked(game))throw httpError(409,'This game is locked. Assignment history cannot be undone.');
       const id=body.eventId;
       if(typeof id!=='string'||!id||id.length>64)throw httpError(400,'Invalid history entry');
       const event=s.audit.find(e=>e.id===id&&e.action==='name');
@@ -39,13 +42,13 @@ export default async function handler(req,res){try{
       audit(s,'undoName',{square:i+1,old:event.details.newName,newName:event.details.old,undid:event.id});return true;
     }
     if(action==='digits'){
-      if(game.digitsLocked===true||game.quarter>0||game.kickoffAt)throw httpError(409,'Weekly numbers are locked for this game');
+      if(gameLocked(game))throw httpError(409,'Weekly numbers are locked for this game');
       if(!validDigits(body.cols)||!validDigits(body.rows))throw httpError(400,'Use each digit 0–9 exactly once per team');
       game.cols=[...body.cols];game.rows=[...body.rows];game.numbersAssigned=true;audit(s,'digits',{gameId:game.id});return true;
     }
     if(action==='lockDigits'){
-      if(game.digitsLocked===true||game.quarter>0||game.kickoffAt)throw httpError(409,'Weekly numbers are already locked');
-      if(game.numbersAssigned===false)throw httpError(409,'Save this week’s number assignments before locking');
+      if(gameLocked(game))throw httpError(409,'Weekly numbers are already locked');
+      if(game.numbersAssigned!==true)throw httpError(409,'Save this week’s number assignments before locking');
       if(!validDigits(game.cols)||!validDigits(game.rows))throw httpError(400,'Assign all digits 0–9 once per team before locking');
       game.digitsLocked=true;game.lockedAt=new Date().toISOString();audit(s,'lockDigits',{gameId:game.id});return true;
     }
