@@ -30,7 +30,7 @@ export async function change(fn) {
     const result=await fn(state);
     const next={...state,revision:(state.revision||0)+1,updatedAt:new Date().toISOString()};
     try {
-      await put(STORE_KEY,JSON.stringify(next),{access:'private',contentType:'application/json',allowOverwrite:!!etag,ifMatch:etag||undefined});
+      await put(STORE_KEY,JSON.stringify(next),{access:'private',contentType:'application/json',allowOverwrite:true});
       return {state:next,result};
     }catch(e) {
       if (e instanceof BlobPreconditionFailedError || e?.name==='BlobPreconditionFailedError' || e?.status===412 || e?.status===409)continue;
