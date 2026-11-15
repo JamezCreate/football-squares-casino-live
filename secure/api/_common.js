@@ -1,4 +1,4 @@
-import { get, put, BlobPreconditionFailedError } from '@vercel/blob';
+import { get, head, put, BlobPreconditionFailedError } from '@vercel/blob';
 import { createHmac, timingSafeEqual, randomBytes, scryptSync } from 'node:crypto';
 
 const STORE_KEY = 'football-squares/season-state-v1.json';
@@ -9,7 +9,7 @@ export function defaults() {
   return {
     schema: 1, revision: 0,
     names: Array(100).fill(''),
-    games: [{ id:'week-1', label:'Week 1', cols:[0,1,2,3,4,5,6,7,8,9], rows:[0,1,2,3,4,5,6,7,8,9], scores:[0,0], quarter:0, winners:[], createdAt:new Date().toISOString() }],
+    games: [{ id:'week-1', label:'Week 1', cols:[0,1,2,3,4,5,6,7,8,9], rows:[0,1,2,3,4,5,6,7,8,9], scores:[0,0], digitsLocked:false, numbersAssigned:false, quarter:0, winners:[], createdAt:new Date().toISOString() }],
     activeId: 'week-1', owner:null, audit:[], updatedAt: new Date().toISOString()
   };
 }
@@ -17,11 +17,19 @@ export async function load() {
   const b = await get(STORE_KEY,{access:'private',useCache:false});
   if (!b) return {state:defaults(),etag:null};
   const state = JSON.parse(await new Response(b.stream).text());
-  return {state,etag:b.blob?.etag};
+  // Verify the read against a fresh HEAD before writing so stale snapshots never overwrite the board.
+  const metadata = await head(STORE_KEY);
+  if (!metadata?.etag || !b.blob?.etag || metadata.etag !== b.blob.etag) {
+    throw httpError(409,'Board changed during read. Retry with fresh data.');
+  }
+  return {state,etag:metadata.etag};
 }
 export async function change(fn) {
-  for (let i=0;i<5;i++) {
-    const {state,etag}=await load();
+  for (let i=0;i<8;i++) {
+    let snapshot;
+    try { snapshot=await load(); }
+    catch(e) {if(e?.status===409)continue;throw e;}
+    const {state,etag}=snapshot;
     const result=await fn(state);
     const next={...state,revision:(state.revision||0)+1,updatedAt:new Date().toISOString()};
     try {
@@ -32,7 +40,7 @@ export async function change(fn) {
       throw e;
     }
   }
-  throw httpError(409,'The board changed during this update. Please retry.');
+  throw httpError(409,'The board is receiving updates. Please retry saving in a moment; your entries are still in the form.');
 }
 export function httpError(status,message){return Object.assign(new Error(message),{status});}
 export function respond(res,status,data){res.status(status).setHeader('Cache-Control','no-store').setHeader('Content-Type','application/json; charset=utf-8').json(data);}
@@ -48,6 +56,7 @@ export function hashPassword(password,salt){return scryptSync(password,salt,64).
 export function ownerRecord(password){const salt=randomBytes(24).toString('hex');return {salt,hash:hashPassword(password,salt),authVersion:randomBytes(12).toString('hex')};}
 export function assertOwner(req,state){if(!authenticated(req,state))throw httpError(401,'Owner login required');}
 export function requireString(v,max=80){if(typeof v!=='string'||v.length>max)throw httpError(400,'Invalid text');return v.trim();}
+export function gameLocked(g){return !!(g?.digitsLocked===true || (g?.quarter||0)>0 || g?.kickoffAt || g?.winners?.length);}
 export function validDigits(a){return Array.isArray(a)&&a.length===10&&a.every(v=>Number.isInteger(v)&&v>=0&&v<=9)&&new Set(a).size===10;}
 export function publicState(s){return {schema:s.schema,revision:s.revision,names:s.names,games:s.games,activeId:s.activeId,updatedAt:s.updatedAt,ownerConfigured:!!s.owner};}
 export function audit(s,action,details){s.audit.push({id:randomBytes(12).toString('hex'),time:new Date().toISOString(),action,details});s.audit=s.audit.slice(-200);}
