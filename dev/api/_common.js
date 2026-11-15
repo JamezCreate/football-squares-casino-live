@@ -1,4 +1,4 @@
-import { get, head, put, BlobPreconditionFailedError } from '@vercel/blob';
+import { get, put, BlobPreconditionFailedError } from '@vercel/blob';
 import { createHmac, timingSafeEqual, randomBytes, scryptSync } from 'node:crypto';
 
 const STORE_KEY = 'football-squares/season-state-v1.json';
@@ -17,12 +17,9 @@ export async function load() {
   const b = await get(STORE_KEY,{access:'private',useCache:false});
   if (!b) return {state:defaults(),etag:null};
   const state = JSON.parse(await new Response(b.stream).text());
-  // Verify the read against a fresh HEAD before writing so stale snapshots never overwrite the board.
-  const metadata = await head(STORE_KEY);
-  if (!metadata?.etag || !b.blob?.etag || metadata.etag !== b.blob.etag) {
-    throw httpError(409,'Board changed during read. Retry with fresh data.');
-  }
-  return {state,etag:metadata.etag};
+  // get() supplies a coherent content snapshot and its ETag.
+  // Compare that ETag only at put() time; a second HEAD is not authoritative for this stream.
+  return {state,etag:b.blob.etag};
 }
 export async function change(fn) {
   for (let i=0;i<8;i++) {
