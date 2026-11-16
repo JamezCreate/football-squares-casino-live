@@ -66,7 +66,7 @@
 @media(max-width:650px){.espn-panel{padding:13px}.espn-band{font-size:11px}}
 .dev-ribbon{position:sticky;top:0;z-index:3000;background:#f8c94d;color:#211707;text-align:center;font:800 12px system-ui,Arial,sans-serif;letter-spacing:.07em;padding:10px 14px;box-shadow:0 5px 20px #0009}.dev-ribbon span{font-weight:600;letter-spacing:0}</style></head><body><div class="dev-ribbon" role="status">DEVELOPMENT / TEST POOL <span>— practice only · separate from the live pool</span></div><div class="stadium"></div><main class="wrap"><header><div class="head"><div class="mark">🏈</div><div><div class="kicker">SEASON FOOTBALL POOL</div><h1>GRIDIRON <span>GOLD</span></h1><div class="tiny">Vegas + Sports Hybrid · Shared season board</div></div></div><div class="head"><span class="pill" id="connection">CONNECTING…</span><button class="btn gold" id="ownerButton">Owner workspace</button><button class="btn hidden" id="logoutButton">Log Out</button></div></header>
 <div aria-label="Game status" class="statusbar"><span class="phase-tag" id="gamePhase">Loading game…</span><span id="seasonProgress">Season board stays locked by position · weekly numbers change</span></div><div class="espn-band" aria-live="polite"><span class="espn-dot off" id="espnDot"></span><strong id="espnPublicStatus">ESPN live scoring: not connected</strong><span class="espn-note" id="espnPublicDetails">Scores can still be entered manually.</span></div><div class="scoreboard" id="scoreboard"><div class="team"><span class="helm b">B</span><div><strong>CINCINNATI BENGALS</strong><div class="score" id="bScore">0</div></div></div><div class="mid"><small>🏟️ GAME DAY</small><strong id="period">Q1</strong><span class="tiny" id="gameTitle">Week 1</span></div><div class="team right"><div><strong>PITTSBURGH STEELERS</strong><div class="score" id="sScore">0</div></div><span class="helm s">★</span></div></div><section aria-label="Current winning combination" aria-live="polite" class="winner-hero"><div><div class="winner-eyebrow">✦ CURRENT WINNING SQUARE</div><strong id="heroWinner">—</strong><p id="heroDigits">Awaiting game data</p></div><div class="hero-sq" id="heroSquare">#—</div></section>
-<section class="layout"><div class="panel"><div class="titlebar"><h2>🏆 THE 100-SQUARE BOARD</h2><div class="head"><span class="tiny">BENGALS → | STEELERS ↓</span><span class="pill" id="count">0/100 Claimed</span></div></div><div class="board-tools"><span class="tiny board-cue">↔ Swipe sideways to explore all 10 columns</span><div class="buttons"><button aria-pressed="true" class="btn sm" id="boardFit" type="button">Compact</button><button aria-pressed="false" class="btn sm" id="boardLarge" type="button">Larger squares</button><span aria-live="polite" class="board-size-readout" id="boardSizeReadout">Compact · 650px</span><button aria-label="Open fullscreen football squares board" class="btn sm sky" id="boardFullscreen" type="button">⛶ Fullscreen board</button><button aria-label="Close fullscreen football squares board" class="btn sm hidden" id="boardExit" type="button">✕ Close fullscreen</button></div></div><div class="legend" aria-label="Square status legend"><span><i class="open"></i>Unclaimed</span><span><i class="taken"></i>Claimed</span><span><i class="current"></i>Current leader</span><span><i class="winner"></i>Quarter winner</span></div><div class="board-scroll" id="boardScroll"><div class="boardframe"><div class="vertical">STEELERS</div><div aria-label="Season football squares board" class="board" id="board" role="grid"></div></div></div><div aria-live="polite" class="square-details" id="squareDetails" role="status"><div><small>SELECTED SQUARE</small><strong id="selectedName">Tap a square to inspect</strong><span id="selectedDigits">Square number and team digits appear here.</span></div><span class="pill" id="selectedBadge">#—</span></div><p class="muted">Square positions and owners remain fixed for the season. The 0–9 team numbers are assigned separately for each game.</p><div aria-live="polite" class="status" id="message" role="status"></div></div><aside class="side"><div class="panel"><div class="titlebar"><h2>📺 Game Center</h2><span class="pill" id="viewerRole">SPECTATOR</span></div><div class="field"><label for="gameSelect">Select game / week</label><select id="gameSelect"></select></div><div class="stat" style="margin-top:10px"><h3>Currently winning square</h3><strong id="leader">—</strong><p id="combination">Bengals 0 · Steelers 0</p></div><div class="field" style="margin-top:12px"><label for="search">Find participant</label><input id="search" placeholder="Search a name"/></div><div class="audio-controls" aria-label="Game-day audio mix"><div class="line"><label><input id="sound" type="checkbox"/> Enable stadium audio</label><button class="btn sm" id="stopSound" type="button">Stop audio</button></div><label for="crowdVolume">Crowd volume <output id="crowdLevel">55%</output></label><input id="crowdVolume" type="range" min="0" max="100" value="55"/><label for="voiceVolume">Announcer volume <output id="voiceLevel">85%</output></label><input id="voiceVolume" type="range" min="0" max="100" value="85"/><label><input type="checkbox" id="voiceEnabled" checked/> Include announcer</label><small class="tiny">ElevenLabs clips play only when generated. Sound is off until you enable it.</small></div><div class="hidden" id="audioStatus" style="margin-top:6px">Sound pack: checking...</div><div class="divider"></div><h3 style="margin:0 0 8px">Quarter winners</h3><div id="winners"></div></div></aside></section><section aria-labelledby="workspaceTitle" class="owner-workspace panel hidden" id="adminPanel">
+<section class="layout"><div class="panel"><div class="titlebar"><h2>🏆 THE 100-SQUARE BOARD</h2><div class="head"><span class="tiny">BENGALS → | STEELERS ↓</span><span class="pill" id="count">0/100 Claimed</span></div></div><div class="board-tools"><span class="tiny board-cue">↔ Swipe sideways to explore all 10 columns</span><div class="buttons"><button aria-pressed="true" class="btn sm" id="boardFit" type="button">Compact</button><button aria-pressed="false" class="btn sm" id="boardLarge" type="button">Larger squares</button><span aria-live="polite" class="board-size-readout" id="boardSizeReadout">Compact · 650px</span><button aria-label="Open fullscreen football squares board" class="btn sm sky" id="boardFullscreen" type="button">⛶ Fullscreen board</button><button aria-label="Close fullscreen football squares board" class="btn sm hidden" id="boardExit" type="button">✕ Close fullscreen</button></div></div><div class="legend" aria-label="Square status legend"><span><i class="open"></i>Unclaimed</span><span><i class="taken"></i>Claimed</span><span><i class="current"></i>Current leader</span><span><i class="winner"></i>Quarter winner</span></div><div class="board-scroll" id="boardScroll"><div class="boardframe"><div class="vertical">STEELERS</div><div aria-label="Season football squares board" class="board" id="board" role="grid"></div></div></div><div aria-live="polite" class="square-details" id="squareDetails" role="status"><div><small>SELECTED SQUARE</small><strong id="selectedName">Tap a square to inspect</strong><span id="selectedDigits">Square number and team digits appear here.</span></div><span class="pill" id="selectedBadge">#—</span></div><p class="muted">Square positions and owners remain fixed for the season. The 0–9 team numbers are assigned separately for each game.</p><div aria-live="polite" class="status" id="message" role="status"></div></div><aside class="side"><div class="panel"><div class="titlebar"><h2>📺 Game Center</h2><span class="pill" id="viewerRole">SPECTATOR</span></div><div class="field"><label for="gameSelect">Select game / week</label><select id="gameSelect"></select></div><div class="stat" style="margin-top:10px"><h3>Currently winning square</h3><strong id="leader">—</strong><p id="combination">Bengals 0 · Steelers 0</p></div><div class="field" style="margin-top:12px"><label for="search">Find participant</label><input id="search" placeholder="Search a name"/></div><div class="audio-controls" aria-label="Game-day audio mix"><div class="line"><label><input id="sound" type="checkbox"/> Enable stadium audio</label><button class="btn sm" id="stopSound" type="button">Stop audio</button></div><label for="crowdVolume">Crowd volume <output id="crowdLevel">55%</output></label><input id="crowdVolume" type="range" min="0" max="100" value="55"/><label for="voiceVolume">Announcer volume <output id="voiceLevel">85%</output></label><input id="voiceVolume" type="range" min="0" max="100" value="85"/><label><input type="checkbox" id="voiceEnabled" checked/> Include announcer</label><small class="tiny">Your crowd recording and original stadium sound effects. No API key or paid service needed. Turn on sound to hear game events.</small></div><div class="hidden" id="audioStatus" style="margin-top:6px">Sound pack: checking...</div><div class="divider"></div><h3 style="margin:0 0 8px">Quarter winners</h3><div id="winners"></div></div></aside></section><section aria-labelledby="workspaceTitle" class="owner-workspace panel hidden" id="adminPanel">
 <div class="owner-head"><div><div class="kicker">PRIVATE OWNER WORKSPACE</div><h2 id="workspaceTitle">Pool control center</h2><p class="muted">Owner changes are saved securely. The public board updates automatically.</p></div><span class="pill">OWNER ONLY</span></div>
 <div aria-label="Owner workspace sections" class="owner-nav" role="tablist">
 <button aria-controls="panelSeason" aria-selected="true" class="owner-tab active" data-owner-tab="season" id="tabSeason" role="tab">01 · Season board</button>
@@ -111,8 +111,8 @@
 </div>
 </section>
 <section aria-labelledby="tabAudio" class="owner-pane hidden" id="panelAudio" role="tabpanel">
-<div class="pane-intro"><span class="step">ELEVENLABS</span><h3>Stadium audio studio</h3><p>Generate polished cheers and announcer calls once. Saved clips play without new generation charges.</p></div>
-<div class="editing-card"><div class="field"><label for="clipChoice">Sound clip</label><select id="clipChoice"><option value="score">Crowd — score cheer</option><option value="touchdown">Crowd — touchdown roar</option><option value="jackpot">Winner — jackpot fanfare</option><option value="voice_score">Announcer — score change</option><option value="voice_touchdown">Announcer — touchdown</option><option value="voice_winner">Announcer — winner</option></select></div><div class="buttons" style="margin-top:12px"><button class="btn sky" id="generateClip">Generate with ElevenLabs</button><button class="btn" id="previewClip">▶ Preview clip</button></div><p class="muted" id="audioAdminStatus">Checking clip library…</p></div>
+<div class="pane-intro"><span class="step">LOCAL AUDIO</span><h3>Stadium audio studio</h3><p>Preview the real crowd recording you supplied, original scoreboard and victory sounds, and optional device announcer speech. No paid audio API.</p></div>
+<div class="editing-card"><div class="field"><label for="clipChoice">Sound clip</label><select id="clipChoice"><option value="score">Crowd — score cheer</option><option value="touchdown">Crowd — touchdown roar</option><option value="jackpot">Winner — jackpot fanfare</option><option value="voice_score">Announcer — score change</option><option value="voice_touchdown">Announcer — touchdown</option><option value="voice_winner">Announcer — winner</option></select></div><div class="buttons" style="margin-top:12px"><button class="btn sky" id="generateClip">▶ Test winner celebration</button><button class="btn" id="previewClip">▶ Preview clip</button></div><p class="muted" id="audioAdminStatus">Ready to preview your crowd and score sounds.</p></div>
 </section>
 <section aria-labelledby="tabHistory" class="owner-pane hidden" id="panelHistory" role="tabpanel">
 <div class="pane-intro"><span class="step">OWNER AUDIT TRAIL</span><h3>Season change history</h3><p>Review participant corrections and weekly changes. Undo is available for the latest change to a square when nobody has edited that square since.</p></div>
@@ -168,17 +168,100 @@ $('saveDigits').onclick=async()=>{const cols=parseDigits($('colDigits').value),r
 $('applyScore').onclick=async()=>{const prev=getGame()?.scores?.join('/');if(await admin('score',{bengals:Number($('bInput').value),steelers:Number($('sInput').value)})&&prev!==getGame()?.scores?.join('/')){scoreBurst();const old=prev.split('/').map(Number),now=getGame().scores;playGameAudio(now.some((n,i)=>n-old[i]>=6)?'touchdown':'score')}};$('endQuarter').onclick=async()=>{if(!confirm('Confirm the '+['Q1','halftime','Q3','final'][getGame().quarter]+' winner? This permanently records the current score and square for this week.'))return;if(await admin('endQuarter')){celebrate(getGame().winners.at(-1))}};$('winnerClose').onclick=()=>{$('winnerOverlay').classList.remove('show');$('endQuarter').focus();};
 function scoreBurst(){for(const el of [$('scoreboard'),document.querySelector('.winner-hero')]){if(!el)continue;const cls=el.id==='scoreboard'?'score-burst':'leader-change';el.classList.remove(cls);void el.offsetWidth;el.classList.add(cls);setTimeout(()=>el.classList.remove(cls),900)}}
 function celebrate(w){if(!w)return;$('winnerPeriod').textContent=['Q1','HALFTIME','Q3','FINAL'][w.quarter-1]+' WINNER!';$('winnerName').textContent=w.name.toUpperCase();$('winnerInfo').textContent='Square #'+w.square+' · Bengals '+w.scores[0]+' / Steelers '+w.scores[1];$('winnerOverlay').classList.add('show');$('winnerClose').focus();playGameAudio('jackpot');const e=$('confetti');e.replaceChildren();if(window.matchMedia('(prefers-reduced-motion: reduce)').matches)return;for(let i=0;i<34;i++){let z=document.createElement('i');z.style.setProperty('--x',(i*89.13%100)+'%');z.style.setProperty('--t',(2+i%13*.15)+'s');z.style.setProperty('--c',['#ffe96e','#ff934f','#72ddff','#e5f0ff'][i%4]);e.append(z)}setTimeout(()=>e.replaceChildren(),5500)}
-let audioClips={},audioConfigured=false,audioQueue=Promise.resolve(),audioElement=null,audioGeneration=0;
-async function audioStatus(){try{const r=await api('audio');audioClips=r.available||{};audioConfigured=!!r.configured;const ready=Object.values(audioClips).filter(Boolean).length;$('audioStatus').textContent='Audio pack: '+ready+'/6 clips ready';$('audioAdminStatus').textContent=ready+'/6 clips generated. '+(audioConfigured?'Select a missing clip and generate it.':'Set ELEVENLABS_API_KEY in Vercel, then redeploy.');}catch(e){$('audioStatus').textContent='Audio library unavailable';}}
-function stopAudio(){audioGeneration++;if(audioElement){audioElement.pause();audioElement.currentTime=0;audioElement=null}audioQueue=Promise.resolve()}
-function audioClip(id,generation){return new Promise(resolve=>{if(generation!==audioGeneration)return resolve();const a=new Audio('/api/audio?clip='+encodeURIComponent(id));audioElement=a;a.volume=(id.startsWith('voice')?Number($('voiceVolume').value):Number($('crowdVolume').value))/100;let done=false;const finish=()=>{if(!done){done=true;if(audioElement===a)audioElement=null;resolve()}};a.addEventListener('ended',finish,{once:true});a.addEventListener('error',finish,{once:true});const p=a.play();if(p?.catch)p.catch(finish);setTimeout(()=>{if(!done){a.pause();finish()}},12000)})}
-function playGameAudio(event){if(!$('sound').checked)return;const pairs={score:['score','voice_score'],touchdown:['touchdown','voice_touchdown'],jackpot:['jackpot','voice_winner']};const ids=(pairs[event]||pairs.score).filter(id=>audioClips[id]&&(!id.startsWith('voice')||$('voiceEnabled').checked));if(!ids.length)return;stopAudio();const generation=audioGeneration;audioQueue=(async()=>{for(const id of ids){if(!$('sound').checked||generation!==audioGeneration)break;await audioClip(id,generation)}})().catch(()=>{})}
-$('sound').addEventListener('change',()=>{if(!$('sound').checked)stopAudio();else if(Object.values(audioClips).every(v=>!v))say('The ElevenLabs sound pack is not ready yet. The app remains silent until clips are generated.',true)});
-$('stopSound').onclick=()=>{stopAudio();$('sound').checked=false;say('Stadium audio stopped.');};
-for(const [slider,output] of [['crowdVolume','crowdLevel'],['voiceVolume','voiceLevel']]){$(slider).addEventListener('input',()=>{$(output).textContent=$(slider).value+'%';if(audioElement){audioElement.volume=audioElement.src.includes('voice_')?Number($('voiceVolume').value)/100:Number($('crowdVolume').value)/100}})}
-$('generateClip').onclick=async()=>{const clip=$('clipChoice').value;if(audioClips[clip]){say('This clip is already generated. Preview it instead.');return}if(!confirm('Generate '+clip+' using ElevenLabs? This consumes ElevenLabs credits.'))return;const btn=$('generateClip');btn.disabled=true;$('audioAdminStatus').textContent='Requesting ElevenLabs audio...';try{await api('audio',{clip});await audioStatus();say('ElevenLabs clip saved securely: '+clip)}catch(e){say(e.message,true);$('audioAdminStatus').textContent=e.message}finally{btn.disabled=false}};
-$('previewClip').onclick=()=>{const id=$('clipChoice').value;if(audioClips[id]){stopAudio();audioClip(id,audioGeneration)}else say('Generate this clip first.',true)};
-
+// Local game-day sound engine: uploaded crowd recording + original Web Audio cues.
+// No ElevenLabs API, payment account, or remote audio generation.
+let audioContext = null, crowdPlayer = null, playingNodes = [];
+const SPEECH = {
+  voice_score: 'Score update! Keep your eyes on that winning square!',
+  voice_touchdown: 'Touchdown! Listen to that crowd!',
+  voice_winner: 'We have a winner! Congratulations to our football squares champion!'
+};
+function localAudioStatus() {
+  $('audioStatus').textContent = 'Local audio ready: crowd recording + original game-day effects';
+  $('audioAdminStatus').textContent = 'Crowd recording included. Select a sound and click Preview Clip. No ElevenLabs account or credits needed.';
+}
+function stopAudio() {
+  if (crowdPlayer) { crowdPlayer.pause(); crowdPlayer.currentTime = 0; crowdPlayer = null; }
+  if (window.speechSynthesis) window.speechSynthesis.cancel();
+  for (const node of playingNodes) { try { node.stop(); } catch {} }
+  playingNodes = [];
+}
+function startAudioContext() {
+  const Context = window.AudioContext || window.webkitAudioContext;
+  if (!Context) return null;
+  if (!audioContext) audioContext = new Context();
+  if (audioContext.state === 'suspended') audioContext.resume().catch(() => {});
+  return audioContext;
+}
+function tone(frequency, when, length, shape = 'sine', gainLevel = .08, endFrequency = null) {
+  const ctx = startAudioContext(); if (!ctx) return;
+  const oscillator = ctx.createOscillator(), volume = ctx.createGain();
+  oscillator.type = shape;
+  oscillator.frequency.setValueAtTime(frequency, when);
+  if (endFrequency) oscillator.frequency.exponentialRampToValueAtTime(endFrequency, when + length);
+  volume.gain.setValueAtTime(0.0001, when);
+  volume.gain.exponentialRampToValueAtTime(Math.max(0.001, gainLevel * Number($('crowdVolume').value) / 100), when + .035);
+  volume.gain.exponentialRampToValueAtTime(0.0001, when + length);
+  oscillator.connect(volume).connect(ctx.destination);
+  oscillator.start(when); oscillator.stop(when + length + .03);
+  playingNodes.push(oscillator);
+  oscillator.addEventListener('ended', () => { playingNodes = playingNodes.filter(n => n !== oscillator); }, { once: true });
+}
+function playCue(type) {
+  const ctx = startAudioContext(); if (!ctx) return;
+  const t = ctx.currentTime + .035;
+  if (type === 'score') {
+    tone(660, t, .12, 'sine', .09); tone(880, t + .14, .18, 'sine', .08);
+  } else if (type === 'touchdown') {
+    tone(175, t, .6, 'sawtooth', .075, 310); tone(350, t + .34, .7, 'triangle', .06, 480);
+    tone(520, t + .75, .38, 'sine', .05);
+  } else if (type === 'jackpot') {
+    [392, 494, 587, 784].forEach((f,i) => tone(f, t + i * .19, .52, 'triangle', .085));
+    tone(784, t + .78, .82, 'sine', .07);
+  }
+}
+function playCrowd() {
+  const audio = new Audio('/api/crowd');
+  audio.preload = 'auto';
+  audio.volume = Number($('crowdVolume').value) / 100;
+  crowdPlayer = audio;
+  audio.addEventListener('error', () => { if(crowdPlayer === audio) say('Crowd recording could not be loaded. Other sound effects still work.', true); }, { once: true });
+  audio.play().catch(() => { if (crowdPlayer === audio) say('Sound was blocked by the browser. Tap Enable stadium audio, then Preview Clip.', true); });
+  audio.addEventListener('ended', () => { if (crowdPlayer === audio) crowdPlayer = null; }, { once: true });
+}
+function playSpeech(key) {
+  if (!window.speechSynthesis || !window.SpeechSynthesisUtterance) return;
+  const utterance = new SpeechSynthesisUtterance(SPEECH[key]);
+  utterance.rate = .97; utterance.pitch = .86;
+  utterance.volume = Number($('voiceVolume').value) / 100;
+  window.speechSynthesis.speak(utterance);
+}
+function playGameAudio(type) {
+  if (!$('sound').checked) return;
+  stopAudio();
+  playCrowd(); playCue(type);
+  const voices = {score:'voice_score',touchdown:'voice_touchdown',jackpot:'voice_winner'};
+  if ($('voiceEnabled').checked) playSpeech(voices[type] || 'voice_score');
+}
+function previewSound(id) {
+  stopAudio();
+  if (id.startsWith('voice_')) { playSpeech(id); return; }
+  playCrowd(); playCue(id);
+}
+$('sound').addEventListener('change', () => {
+  if (!$('sound').checked) { stopAudio(); return; }
+  startAudioContext(); say('Stadium sounds enabled. You can test them in Audio Studio.');
+});
+$('stopSound').onclick = () => { stopAudio(); $('sound').checked = false; say('Stadium audio stopped.'); };
+for (const [slider,output] of [['crowdVolume','crowdLevel'],['voiceVolume','voiceLevel']]) {
+  $(slider).addEventListener('input', () => { $(output).textContent = $(slider).value + '%';
+    if (crowdPlayer) crowdPlayer.volume = Number($('crowdVolume').value) / 100;
+  });
+}
+$('previewClip').onclick = () => previewSound($('clipChoice').value);
+$('generateClip').onclick = () => previewSound('jackpot');
+window.addEventListener('pagehide', stopAudio);
+localAudioStatus();
 document.querySelectorAll('[data-owner-tab]').forEach(b=>{b.addEventListener('click',()=>showOwnerTab(b.dataset.ownerTab));});
 $('boardFit').onclick=()=>setBoardZoom('compact');$('boardLarge').onclick=()=>setBoardZoom('large');
 $('boardFullscreen').onclick=()=>setFullscreen(true);$('boardExit').onclick=()=>setFullscreen(false);
@@ -239,7 +322,7 @@ async function pollEspn(){if(!state||espnPolling)return;const game=getGame();if(
  finally{espnPolling=false}
 }
 showOwnerTab('season');setBoardZoom((()=>{try{return localStorage.getItem('fs-board-size')==='large'?'large':'compact'}catch{return 'compact'}})());
-audioStatus();
+localAudioStatus();
 refresh().then(()=>{const g=getGame();if(g?.espn?.week)$('espnWeek').value=g.espn.week;return pollEspn()});setInterval(()=>refresh(true),10000);setInterval(pollEspn,30000);
 })();
 </script></body></html>
