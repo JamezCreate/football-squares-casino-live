@@ -12,7 +12,7 @@ const CLIPS = Object.freeze({
   voice_winner: {kind:'voice',text:'Ladies and gentlemen, we have a winner! Congratulations to our football squares champion!'}
 });
 const path = id => `football-squares/elevenlabs-audio-v1/${id}.mp3`;
-const key=()=>process.env.ELEVENLABS_API_KEY;
+const key=()=>process.env.ELEVENLABS_API_KEY || process.env.ELEVEN_LABS_API_KEY || process.env.ELEVEN_LABS_API;
 async function asset(id){return get(path(id),{access:'private',useCache:false});}
 
 export default async function handler(req,res){
@@ -36,7 +36,7 @@ export default async function handler(req,res){
   const {state}=await load();assertOwner(req,state);
   const clip=String(req.body?.clip||'');
   const definition=CLIPS[clip];if(!definition)throw httpError(400,'Choose a supported audio clip');
-  if(!key())throw httpError(503,'Set ELEVENLABS_API_KEY in Vercel environment variables first');
+  if(!key())throw httpError(503,'Add ELEVENLABS_API_KEY or ELEVEN_LABS_API to this Vercel project's environment variables, then redeploy');
   // To avoid accidental credit consumption, do not regenerate existing clips.
   if(await asset(clip))throw httpError(409,'Audio already generated. Choose a different clip.');
   const voiceId=process.env.ELEVENLABS_VOICE_ID||'JBFqnCBsd6RMkjVDRZzb';
